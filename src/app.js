@@ -1,11 +1,27 @@
 import express from "express";
+import User from "./model/User.model.js";
+import cookieParser from "cookie-parser";
 
+import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 const app = express();
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-app.get("/about", (req, res) => {
-  res.send("About Page");
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+import authRoutes from "./routes/auth.route.js";
+import profileRoutes from "./routes/profile.route.js";
+import connectionRoutes from "./routes/connection.route.js";
+import userRoutes from "./routes/user.route.js";
+
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/profile", profileRoutes);
+app.use("/api/v1/connections", connectionRoutes);
+app.use("/api/v1/users", userRoutes);
+
+app.use(globalErrorHandler);
+app.use("/api/healthcheck", (req, res) => {
+  res.status(200).json({ success: true, message: "Api is working" });
 });
 
 export default app;
