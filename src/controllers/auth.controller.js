@@ -45,9 +45,9 @@ export const login = async (req, res, next) => {
 
     const token = generateJwt(user._id);
     res.cookie("token", token, {
-      expires: new Date(Date.now() + 7 * 24 * 3600000),
+      expires: new Date(Date.now() + 2 * 24 * 3600000),
       httpOnly: true,
-    }); // 7 days
+    }); // 2 days
 
     return res.status(200).json(new ApiResponse(200, user, "Login successful"));
   } catch (error) {

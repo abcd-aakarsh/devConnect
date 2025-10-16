@@ -20,10 +20,13 @@ export const pendingRequests = async (req, res, next) => {
 
     if (!data || data.length === 0) {
       return res
-        .status(404)
-        .json(new ApiResponse(404, "No pending connection requests found"));
+        .status(200)
+        .json(new ApiResponse(200, "No pending connection requests found"));
     }
-    const connections = data.map((connection) => connection.fromUserId);
+    const connections = data.map((connection) => ({
+      connectionId: connection._id,
+      user: connection.fromUserId,
+    }));
     return res
       .status(200)
       .json(
@@ -52,8 +55,8 @@ export const matches = async (req, res, next) => {
 
     if (!data || data.length === 0) {
       return res
-        .status(404)
-        .json(new ApiResponse(404, "No accepted connections found"));
+        .status(200)
+        .json(new ApiResponse(200, "No accepted connections found"));
     }
     const connections = data.map((match) =>
       match.users.find(

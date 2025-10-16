@@ -40,7 +40,24 @@ export const editProfile = async (req, res, next) => {
   try {
     const updateData = {};
     updates.forEach((field) => {
-      updateData[field] = req.body[field];
+      if (field === "interests" && Array.isArray(req.body[field])) {
+        const flat = req.body[field].flat();
+
+        updateData[field] = flat.flatMap((item) => {
+          if (typeof item === "string") {
+            if (item.startsWith("[") && item.endsWith("]")) {
+              return item
+                .slice(1, -1)
+                .split(",")
+                .map((i) => i.trim());
+            }
+            return item.trim();
+          }
+          return item;
+        });
+      } else {
+        updateData[field] = req.body[field];
+      }
     });
 
     const user = await User.findByIdAndUpdate(

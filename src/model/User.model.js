@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    default: "https://your-app.com/default-avatar.png",
+    default: "https://avatarfiles.alphacoders.com/376/thumb-1920-376048.png",
   },
   bio: {
     type: String,

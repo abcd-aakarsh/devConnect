@@ -4,7 +4,7 @@ export const isAuthenticatedUser = async (req, res, next) => {
   const token = req.cookies.token;
 
   if (!token) {
-    return next(new ApiError(401, "Unauthorized"));
+    return next(new ApiError(401, "Unauthorized-No token"));
   }
 
   try {
@@ -12,6 +12,6 @@ export const isAuthenticatedUser = async (req, res, next) => {
     req.user = decoded.id;
     next();
   } catch (error) {
-    return next(new ApiError(401, "Unauthorized"));
+    return next(new ApiError(401, "Unauthorized", error));
   }
 };
